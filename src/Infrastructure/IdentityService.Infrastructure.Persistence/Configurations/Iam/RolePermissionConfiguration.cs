@@ -13,5 +13,11 @@ public sealed class RolePermissionConfiguration : IEntityTypeConfiguration<RoleP
         b.Property(x => x.RowVersion).IsRowVersion();
 
         b.HasIndex(x => new { x.RoleId, x.PermissionId }).IsUnique();
+
+        b.HasOne<Permission>()
+         .WithMany()
+         .HasForeignKey(x => x.PermissionId)
+         .OnDelete(DeleteBehavior.Restrict)
+         .HasConstraintName("FK_RolePermission_Permission");
     }
 }

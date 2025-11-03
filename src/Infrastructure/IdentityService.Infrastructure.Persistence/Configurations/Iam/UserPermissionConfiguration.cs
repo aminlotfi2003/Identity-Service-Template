@@ -13,5 +13,11 @@ public sealed class UserPermissionConfiguration : IEntityTypeConfiguration<UserP
         b.Property(x => x.RowVersion).IsRowVersion();
 
         b.HasIndex(x => new { x.UserId, x.PermissionId }).IsUnique();
+
+        b.HasOne<Permission>()
+         .WithMany()
+         .HasForeignKey(x => x.PermissionId)
+         .OnDelete(DeleteBehavior.Restrict)
+         .HasConstraintName("FK_UserPermission_Permission");
     }
 }

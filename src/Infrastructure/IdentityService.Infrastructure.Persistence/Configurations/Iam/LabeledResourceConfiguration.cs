@@ -15,5 +15,11 @@ public sealed class LabeledResourceConfiguration : IEntityTypeConfiguration<Labe
 
         b.HasIndex(x => new { x.ResourceType, x.ResourceId, x.LabelId }).IsUnique();
         b.HasIndex(x => x.TenantId);
+
+        b.HasOne<DataLabel>()
+         .WithMany()
+         .HasForeignKey(x => x.LabelId)
+         .OnDelete(DeleteBehavior.Restrict)
+         .HasConstraintName("FK_LabeledResource_DataLabel");
     }
 }
