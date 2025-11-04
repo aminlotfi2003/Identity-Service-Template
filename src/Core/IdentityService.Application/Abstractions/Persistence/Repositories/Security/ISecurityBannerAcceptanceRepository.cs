@@ -5,4 +5,5 @@ namespace IdentityService.Application.Abstractions.Persistence.Repositories.Secu
 public interface ISecurityBannerAcceptanceRepository : IRepository<SecurityBannerAcceptance, Guid>
 {
     Task<SecurityBannerAcceptance?> GetLatestAsync(Guid userId, CancellationToken ct = default);
+    Task<bool> HasAcceptedAsync(Guid userId, string? version, CancellationToken ct = default);
 }

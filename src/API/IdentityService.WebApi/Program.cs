@@ -1,4 +1,5 @@
 using Asp.Versioning.ApiExplorer;
+using IdentityService.Application;
 using IdentityService.Infrastructure.CrossCutting;
 using IdentityService.Infrastructure.Identity;
 using IdentityService.Infrastructure.Persistence;
@@ -7,6 +8,7 @@ using IdentityService.WebFramework.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddApplication();
 builder.Services.AddCrossCutting();
 builder.Services.AddIdentity(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
@@ -27,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-await app.Services.UseMigrationsAndSeedAsync(app.Logger);
+//await app.Services.UseMigrationsAndSeedAsync(app.Logger);
 
 app.UseHttpsRedirection();
 

@@ -13,4 +13,7 @@ public sealed class SecurityBannerAcceptanceRepository : Repository<SecurityBann
         => _set.Where(x => x.UserId == userId)
                .OrderByDescending(x => x.AcceptedAt)
                .FirstOrDefaultAsync(ct);
+
+    public Task<bool> HasAcceptedAsync(Guid userId, string? version, CancellationToken ct = default) =>
+        _set.AnyAsync(x => x.UserId == userId && (version == null || x.Version == version), ct);
 }

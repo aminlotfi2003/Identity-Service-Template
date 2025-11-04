@@ -22,8 +22,4 @@
     <ProjectReference Include="..\IdentityService.WebFramework\IdentityService.WebFramework.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

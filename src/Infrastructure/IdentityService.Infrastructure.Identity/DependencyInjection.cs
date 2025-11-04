@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace IdentityService.Infrastructure.Identity;
 
@@ -48,30 +47,22 @@ public static class DependencyInjection
         // Token lifetimes (email confirmation/reset, etc.)
         services.PostConfigure<IdentityOptions>(opt =>
         {
-            // config → override
-            var tokenCfg = config.GetSection("Identity:Tokens").Get<IdentityTokenSettings>() ?? new();
             opt.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             opt.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultProvider;
             opt.Tokens.ChangeEmailTokenProvider = TokenOptions.DefaultEmailProvider;
-
-            services.Configure<DataProtectionTokenProviderOptions>(o =>
-            {
-                o.TokenLifespan = tokenCfg.DefaultLifespan;
-            });
         });
 
-        // Security stamp revalidation (re-authn for sensitive ops)
-        services.Configure<SecurityStampValidatorOptions>(o =>
+        var tokenCfg = identity.GetSection("Tokens").Get<IdentityTokenSettings>() ?? new();
+        services.Configure<DataProtectionTokenProviderOptions>(o =>
         {
-            o.ValidationInterval = TimeSpan.FromMinutes(5);
+            o.TokenLifespan = tokenCfg.DefaultLifespan;
         });
 
         // Cookie authentication (server-side)
         services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(opt =>
             {
-                var provider = services.BuildServiceProvider();
-                var cookieCfg = provider.GetRequiredService<IOptions<IdentityCookieSettings>>().Value;
+                var cookieCfg = identity.GetSection("Cookie").Get<IdentityCookieSettings>() ?? new();
 
                 opt.Cookie.Name = cookieCfg.Name;
                 opt.Cookie.HttpOnly = true;
@@ -83,6 +74,11 @@ public static class DependencyInjection
                 opt.SlidingExpiration = false;
                 opt.ExpireTimeSpan = cookieCfg.ExpireTimeSpan;
             });
+
+        services.Configure<SecurityStampValidatorOptions>(o =>
+        {
+            o.ValidationInterval = TimeSpan.FromMinutes(5);
+        });
 
         // Custom validators (Password history, min diff, etc.)
         services.AddTransient<IPasswordValidator<ApplicationUser>, PasswordHistoryValidator>();
