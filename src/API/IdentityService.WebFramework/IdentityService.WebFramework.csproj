@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\IdentityService.Infrastructure.CrossCutting\IdentityService.Infrastructure.CrossCutting.csproj" />
     <ProjectReference Include="..\..\Infrastructure\IdentityService.Infrastructure.Monitoring\IdentityService.Infrastructure.Monitoring.csproj" />
   </ItemGroup>
