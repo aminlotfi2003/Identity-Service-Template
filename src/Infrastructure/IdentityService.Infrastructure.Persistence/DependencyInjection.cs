@@ -64,7 +64,8 @@ public static class DependencyInjection
 
     public static async Task UseMigrationsAndSeedAsync(this IServiceProvider sp, ILogger? logger = null, CancellationToken ct = default)
     {
-        using var scope = sp.CreateScope();
+        await using var scope = sp.CreateAsyncScope();
+
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await db.Database.MigrateAsync(ct);
         logger?.LogInformation("Database migrated.");

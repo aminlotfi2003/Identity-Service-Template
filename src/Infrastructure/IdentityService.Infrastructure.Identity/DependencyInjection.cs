@@ -41,6 +41,7 @@ public static class DependencyInjection
             })
             .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddSignInManager<SignInManager<ApplicationUser>>()
             .AddDefaultTokenProviders()
             .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>();
 

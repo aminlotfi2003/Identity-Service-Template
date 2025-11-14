@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//await app.Services.UseMigrationsAndSeedAsync(app.Logger);
+await app.Services.UseMigrationsAndSeedAsync(app.Logger);
 
 app.UseHttpsRedirection();
 
